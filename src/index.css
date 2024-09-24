@@ -11,3 +11,72 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Ensure the parent container has position: relative; in inline styles */
+
+/* Floating element styles */
+.floating-element {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  animation: floatUp 1s forwards;
+  pointer-events: none;
+  transform: translate(-50%, -50%); /* Center the element at the click point */
+}
+
+.moon-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+
+.plus-five {
+  font-size: 30px;
+  color: white;
+}
+
+/* Animation keyframes */
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-50px);
+  }
+}
+/* Ensure the parent container has position: relative; in inline styles */
+
+/* Floating element styles */
+.floating-element {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  animation: floatUp 1s forwards;
+  pointer-events: none;
+  transform: translate(-50%, -50%); /* Center the element at the click point */
+}
+
+.moon-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.plus-five {
+  font-size: 18px;
+  color: white;
+}
+
+/* Animation keyframes */
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-50px);
+  }
+}
