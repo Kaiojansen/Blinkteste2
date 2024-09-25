@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useGLTF, Environment, ContactShadows } from '@react-three/drei';
+import { useGLTF, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 
 function Model({ playAnimation, position, rotation }) {
@@ -91,23 +91,34 @@ function App() {
   const [clicks, setClicks] = useState([]);
 
   const handleClick = (event) => {
+    // Trigger a short vibration (e.g., 100ms) if supported
+    if (navigator.vibrate) {
+      navigator.vibrate(100);
+    }
+
     setPlayAnimation(true);
 
     // Stop the animation after its duration
     setTimeout(() => {
       setPlayAnimation(false);
-    }, 1000); // If the original animation lasted 2 seconds, now it lasts 1 second
+    }, 1000); // Adjust based on your animation's actual duration
 
     // Get the click position relative to the container
     const rect = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - rect.left; // x position within the container
-    const y = event.clientY - rect.top; // y position within the container
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
 
     // Add the click to the clicks array
+    const id = Date.now();
     setClicks((prevClicks) => [
       ...prevClicks,
-      { id: Date.now(), x, y },
+      { id, x, y },
     ]);
+
+    // Remove the click after the animation duration
+    setTimeout(() => {
+      removeClick(id);
+    }, 1000); // Match this duration with your CSS animation duration
   };
 
   const removeClick = (id) => {
@@ -155,9 +166,6 @@ function App() {
 
         {/* Add an HDRI environment */}
         <Environment preset="sunset" />
-
-        {/* Add contact shadows on the ground */}
-
 
         <Model
           playAnimation={playAnimation}
