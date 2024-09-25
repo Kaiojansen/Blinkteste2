@@ -37,52 +37,14 @@
   }
 }
 
-/* Ensure the parent container has position: relative; in inline styles */
-
-/* Floating element styles */
+/* Estilos para o elemento flutuante */
 .floating-element {
   position: absolute;
   display: flex;
   align-items: center;
   animation: floatUp 1s forwards;
   pointer-events: none;
-  transform: translate(-50%, -50%); /* Center the element at the click point */
-}
-
-.moon-icon {
-  width: 30px;
-  height: 30px;
-  margin-right: 5px;
-}
-
-.plus-five {
-  font-size: 30px;
-  color: white;
-  font-weight: bold;
-}
-
-/* Animation keyframes */
-@keyframes floatUp {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) translateY(-50px);
-  }
-}
-
-/* Ensure the parent container has position: relative; in inline styles */
-
-/* Floating element styles */
-.floating-element {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  animation: floatUp 1s forwards;
-  pointer-events: none;
-  transform: translate(-50%, -50%); /* Center the element at the click point */
+  transform: translate(-50%, -50%);
 }
 
 .moon-icon {
@@ -96,7 +58,7 @@
   color: white;
 }
 
-/* Animation keyframes */
+/* Animação */
 @keyframes floatUp {
   0% {
     opacity: 1;

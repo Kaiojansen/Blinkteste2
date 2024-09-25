@@ -87,40 +87,74 @@ function ResponsiveCamera() {
 function App() {
   const [playAnimation, setPlayAnimation] = useState(false);
   const [clicks, setClicks] = useState([]);
-  const [score, setScore] = useState(0); // New state to track the score
+  const [score, setScore] = useState(0);
+  const [energy, setEnergy] = useState(1000); // Estado para a energia
+  const [lastEnergyUpdate, setLastEnergyUpdate] = useState(Date.now());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setEnergy((prevEnergy) => {
+        if (prevEnergy < 1000) {
+          return prevEnergy + 1;
+        } else {
+          return prevEnergy;
+        }
+      });
+    }, 30000); // Recarrega 1 de energia a cada 30 segundos
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleClick = (event) => {
-    // Trigger a short vibration (e.g., 100ms) if supported
-    if (navigator.vibrate) {
-      navigator.vibrate(100);
-    }
-
-    setPlayAnimation(true);
-
-    // Stop the animation after its duration
-    setTimeout(() => {
-      setPlayAnimation(false);
-    }, 1000); // Adjust based on your animation's actual duration
-
     // Get the click position relative to the container
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    // Add the click to the clicks array
-    const id = Date.now();
-    setClicks((prevClicks) => [
-      ...prevClicks,
-      { id, x, y },
-    ]);
+    // Verifica se há energia disponível
+    if (energy > 0) {
+      // Trigger a short vibration (e.g., 100ms) if supported
+      if (navigator.vibrate) {
+        navigator.vibrate(100);
+      }
 
-    // Remove the click after the animation duration
-    setTimeout(() => {
-      removeClick(id);
-    }, 1000); // Match this duration with your CSS animation duration
+      setPlayAnimation(true);
 
-    // Increment the score by 5
-    setScore((prevScore) => prevScore + 5);
+      // Stop the animation after its duration
+      setTimeout(() => {
+        setPlayAnimation(false);
+      }, 1000); // Adjust based on your animation's actual duration
+
+      // Add the click to the clicks array
+      const id = Date.now();
+      setClicks((prevClicks) => [
+        ...prevClicks,
+        { id, x, y, type: 'plus' }, // Indica que é um "+5"
+      ]);
+
+      // Remove the click after the animation duration
+      setTimeout(() => {
+        removeClick(id);
+      }, 1000); // Match this duration with your CSS animation duration
+
+      // Decrementa a energia
+      setEnergy((prevEnergy) => prevEnergy - 1);
+
+      // Increment the score by 5
+      setScore((prevScore) => prevScore + 5);
+    } else {
+      // Sem energia, mostra "Need more Energy"
+      const id = Date.now();
+      setClicks((prevClicks) => [
+        ...prevClicks,
+        { id, x, y, type: 'needEnergy' }, // Indica que é "Need more Energy"
+      ]);
+
+      // Remove o aviso após a duração da animação
+      setTimeout(() => {
+        removeClick(id);
+      }, 1000);
+    }
   };
 
   const removeClick = (id) => {
@@ -192,6 +226,20 @@ function App() {
         {score}
       </div>
 
+      {/* Render the energy at the top-left corner */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '613px',
+          left: '50px',
+          fontSize: '18px',
+          color: 'white',
+          fontWeight: 'bold',
+        }}
+      >
+      {energy}/1000
+      </div>
+
       {/* Render floating elements */}
       {clicks.map((click) => (
         <div
@@ -200,8 +248,14 @@ function App() {
           style={{ top: click.y, left: click.x }}
           onAnimationEnd={() => removeClick(click.id)}
         >
-          <img src="/moon.png" alt="Moon" className="moon-icon" />
-          <span className="plus-five">+5</span>
+          {click.type === 'plus' ? (
+            <>
+              <img src="/moon.png" alt="Moon" className="moon-icon" />
+              <span className="plus-five">+5</span>
+            </>
+          ) : (
+            <span className="need-energy">Need more Energy</span>
+          )}
         </div>
       ))}
     </div>
