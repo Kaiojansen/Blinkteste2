@@ -157,13 +157,7 @@ function App() {
         <Environment preset="sunset" />
 
         {/* Add contact shadows on the ground */}
-        <ContactShadows
-          position={[0, -1, 0]}
-          opacity={0.5}
-          scale={10}
-          blur={1}
-          far={10}
-        />
+
 
         <Model
           playAnimation={playAnimation}
