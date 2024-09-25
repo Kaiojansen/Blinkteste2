@@ -1,5 +1,3 @@
-// App.js
-
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useGLTF, Environment } from '@react-three/drei';
@@ -89,6 +87,7 @@ function ResponsiveCamera() {
 function App() {
   const [playAnimation, setPlayAnimation] = useState(false);
   const [clicks, setClicks] = useState([]);
+  const [score, setScore] = useState(0); // New state to track the score
 
   const handleClick = (event) => {
     // Trigger a short vibration (e.g., 100ms) if supported
@@ -119,6 +118,9 @@ function App() {
     setTimeout(() => {
       removeClick(id);
     }, 1000); // Match this duration with your CSS animation duration
+
+    // Increment the score by 5
+    setScore((prevScore) => prevScore + 5);
   };
 
   const removeClick = (id) => {
@@ -173,6 +175,22 @@ function App() {
           rotation={modelRotation}
         />
       </Canvas>
+
+      {/* Render the score at the top of the screen */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '176px',
+          left: '65%',
+          transform: 'translateX(-50%)',
+          fontSize: '25px',
+          color: 'white',
+          fontWeight: 'bold',
+          textAlign: 'center',
+        }}
+      >
+        {score}
+      </div>
 
       {/* Render floating elements */}
       {clicks.map((click) => (
